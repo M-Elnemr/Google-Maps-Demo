@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             googleMap.setMyLocationEnabled(true);
 
         } catch (Exception e) {
-            Log.d("Error", "onMapReady: " + e.getMessage());
-        }
+            Log.d("Error", "onMapReady: " + e.getMessage()); }
 
         googleMap.setTrafficEnabled(true);
         googleMap.setIndoorEnabled(true);
@@ -115,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    .mapToDouble (Double::parseDouble)
 //                    .toArray();
 
+            //extract LatLng array
             String data = mResponse.getRows().get(i).getDestinationLongLat().get(0);
             String[] tokens = data.split(",");
             double[] destination = new double[tokens.length];
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), 1000, null);
         }
 
+        //add line between markers
         PolylineOptions options = new PolylineOptions ();
         for (LatLng l : latLngs){
             options.add(l);
