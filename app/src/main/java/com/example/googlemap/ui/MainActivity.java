@@ -2,6 +2,7 @@ package com.example.googlemap.ui;
 
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean isMapShown = false;
     private MapsResponse mResponse;
 
-    private List<String> locations = new ArrayList<>();
+    private List<LatLng> latLngs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +125,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             LatLng placeLocation = new LatLng(destination[0], destination[1]);
+            latLngs.add(placeLocation);
                 Marker placeMarker = googleMap.addMarker(new MarkerOptions().position(placeLocation)
                     .title(title));
                 placeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.metro));
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLocation));
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), 1000, null);
         }
+
+        PolylineOptions options = new PolylineOptions ();
+        for (LatLng l : latLngs){
+            options.add(l);
+        }
+        options.color(Color.RED).width(5f).geodesic(true);
+        googleMap.addPolyline(options);
     }
 
     private boolean checkService() {
